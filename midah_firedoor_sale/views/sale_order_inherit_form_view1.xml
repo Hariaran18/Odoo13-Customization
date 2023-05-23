@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View  -->
+    <record id="sale_order_inherit" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Terms Conditions_FireDoor" attrs="{'invisible': [('company_id', 'not in', [4,5,12,13])]}">
+                    <group>
+                        <group string="Optional Items">
+                            <field name="optional_item1_firedoor"/>
+                            <field name="optional_item2_firedoor"/>
+                            <field name="optional_item3_firedoor"/>
+                            <field name="optional_item4_firedoor"/>
+                            <field name="optional_item5_firedoor"/>
+                            <field name="optional_item6_firedoor"/>
+                            <field name="optional_item7_firedoor"/>
+                            <field name="optional_item8_firedoor"/>
+                            <field name="optional_item9_firedoor"/>
+                            <field name="optional_item10_firedoor"/>
+                            <field name="optional_item11_firedoor"/>
+                            <field name="optional_item12_firedoor"/>
+                            <field name="optional_item13_firedoor"/>
+                            <field name="optional_item14_firedoor"/>
+                            <field name="optional_item15_firedoor"/>
+                            <field name="optional_item16_firedoor"/>
+                            <field name="optional_item17_firedoor"/>
+                        </group>
+                        <group>
+                            <field name="quot_validity_firedoor" string="Quote Validity (Days): "/>
+                            <field name="quot_price_validity_firedoor" string="Price Validity (Free Text): "/>
+                            <field name="defect_report_terms_firedoor" string="Defect Reporting Time (Days): "/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

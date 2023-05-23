@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="sale_order_inherit" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Special Mix Lines" attrs="{'invisible': [('company_id', '!=', 11)]}">
+                    <field name="ud_grade_ids" string="Grade Fields">v
+                        <tree
+                                string="Special Mix Lines"
+                                editable="bottom"
+                        >
+                            <control>
+                                <create name="add_product_control" string="Add Lines"/>
+                            </control>
+
+                            <field name="table_header" string="Table Number"/>
+                            <field name="name" string="Grade Value"/>
+                            <field name="price_normal" string="Column1 Price"/>
+                            <field name="specialcode_normal" string="Column1 SpecialCode"/>
+                            <field name="price_pump" string="Column2 Price"/>
+                            <field name="specialcode_pump" string="Column2 SpecialCode"/>
+                            <field name="price_t1" string="Column3 Price"/>
+                            <field name="specialcode_t1" string="Column3 SpecialCode"/>
+                            <field name="price_t2" string="Column4 Price"/>
+                            <field name="specialcode_t2" string="Column4 SpecialCode"/>
+                            <field name="price_t3" string="Column5 Price"/>
+                            <field name="specialcode_t3" string="Column5 SpecialCode"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

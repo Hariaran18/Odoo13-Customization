@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+  <record id="terms_conditions_tree" model="ir.ui.view">
+      <field name="name">terms.condition.tree</field>
+      <field name="model">terms.conditions</field>
+      <field name="arch" type="xml">
+          <tree string="Projects">
+              <field name="name"/>
+          </tree>
+      </field>
+  </record>
+
+  <record id="terms_conditions_form" model="ir.ui.view">
+      <field name="name">terms.conditions.form</field>
+      <field name="model">terms.conditions</field>
+      <field name="priority" eval="1"/>
+      <field name="arch" type="xml">
+          <form string="Term">
+              <sheet>
+                  <group>
+                      <group>
+                          <field name="name"/>
+                      </group>
+                  </group>
+                  <group>
+                      <field name="line_number_1"/>
+                      <field name="line_number_1a"/>
+                      <field name="terms_conditions1a_proposal"/>
+                      <field name="line_number_1b"/>
+                      <field name="terms_conditions1b_proposal"/>
+                      <field name="line_number_1c"/>
+                      <field name="terms_conditions1c_proposal"/>
+                      <field name="line_number_2"/>
+                      <field name="line_number_2a"/>
+                      <field name="terms_conditions2a_proposal"/>
+                      <field name="trucks_assigned1_proposal"/>
+                      <field name="trucks_assigned2_proposal"/>
+                      <field name="monthly_m3a_proposal"/>
+                      <field name="monthly_m3b_proposal"/>
+                      <field name="line_number_3"/>
+                      <field name="line_number_3a"/>
+                      <field name="terms_conditions3a_proposal"/>
+                      <field name="line_number_3b"/>
+                      <field name="terms_conditions3b_proposal"/>
+                      <field name="line_number_3c"/>
+                      <field name="terms_conditions3c_proposal"/>
+                      <field name="line_number_4"/>
+                      <field name="line_number_4a"/>
+                      <field name="terms_conditions4a_proposal"/>
+                      <field name="line_number_4b"/>
+                      <field name="terms_conditions4b_proposal"/>
+                      <field name="line_number_4c"/>
+                      <field name="terms_conditions4c_proposal"/>
+                      <field name="line_number_5"/>
+                      <field name="line_number_5a"/>
+                      <field name="terms_conditions5a_proposal"/>
+                      <field name="line_number_6"/>
+                      <field name="line_number_6a"/>
+                      <field name="terms_conditions6a_proposal"/>
+                      <field name="line_number_7"/>
+                      <field name="line_number_7a"/>
+                      <field name="terms_conditions7a_proposal"/>
+                      <field name="line_number_8"/>
+                      <field name="line_number_8a"/>
+                      <field name="terms_conditions8a_proposal"/>
+                      <field name="line_number_9"/>
+                      <field name="line_number_9a"/>
+                      <field name="terms_conditions9a_proposal"/>
+                      <field name="line_number_9b"/>
+                      <field name="terms_conditions9b_proposal"/>
+                      <field name="line_number_9c"/>
+                      <field name="terms_conditions9c_proposal"/>
+                      <field name="structure1_proposal"/>
+                      <field name="structure2_proposal"/>
+                      <field name="structure3_proposal"/>
+                      <field name="variation1_proposal"/>
+                      <field name="variation2_proposal"/>
+                      <field name="variation3_proposal"/>
+                      <field name="line_number_10"/>
+                      <field name="line_number_10a"/>
+                      <field name="terms_conditions10a_proposal"/>
+                      <field name="line_number_10b"/>
+                      <field name="terms_conditions10b_proposal"/>
+                      <field name="line_number_10c"/>
+                      <field name="terms_conditions10c_proposal"/>
+                      <field name="line_number_10c1"/>
+                      <field name="terms_conditions10c1_proposal"/>
+                      <field name="line_number_10c2"/>
+                      <field name="terms_conditions10c2_proposal"/>
+                      <field name="line_number_10c3"/>
+                      <field name="terms_conditions10c3_proposal"/>
+                      <field name="line_number_10c4"/>
+                      <field name="terms_conditions10c4_proposal"/>
+                      <field name="line_number_10d"/>
+                      <field name="terms_conditions10d_proposal"/>
+                      <field name="line_number_10e"/>
+                      <field name="terms_conditions10e_proposal"/>
+                      <field name="line_number_10f"/>
+                      <field name="terms_conditions10f_proposal"/>
+                      <field name="line_number_10g"/>
+                      <field name="terms_conditions10g_proposal"/>
+                      <field name="line_number_10h"/>
+                      <field name="terms_conditions10h_proposal"/>
+                      <field name="line_number_11"/>
+                      <field name="line_number_11a"/>
+                      <field name="terms_conditions11a_proposal"/>
+                      <field name="line_number_12"/>
+                      <field name="line_number_12a"/>
+                      <field name="terms_conditions12a_proposal"/>
+                      <field name="line_number_13"/>
+                      <field name="line_number_13a"/>
+                      <field name="terms_conditions13a_proposal"/>
+                      <field name="line_number_13b"/>
+                      <field name="terms_conditions13b_proposal"/>
+                      <field name="line_number_14"/>
+                      <field name="line_number_14a"/>
+                      <field name="terms_conditions14a_proposal"/>
+                      <field name="line_number_15"/>
+                      <field name="line_number_15a"/>
+                      <field name="terms_conditions15a_proposal"/>
+                      <field name="line_number_16"/>
+                      <field name="line_number_16a"/>
+                      <field name="terms_conditions16a_proposal"/>
+                      <field name="line_number_16a1"/>
+                      <field name="terms_conditions16a1_proposal"/>
+                      <field name="line_number_16b"/>
+                      <field name="terms_conditions16b_proposal"/>
+                      <field name="line_number_16b1"/>
+                      <field name="terms_conditions16b1_proposal"/>
+                      <field name="line_number_17"/>
+                      <field name="line_number_17a"/>
+                      <field name="terms_conditions17a_proposal"/>
+                      <field name="line_number_17b"/>
+                      <field name="terms_conditions17b_proposal"/>
+                      <field name="line_number_18"/>
+                      <field name="line_number_18a"/>
+                      <field name="terms_conditions18a_proposal"/>
+                      <field name="line_number_18b"/>
+                      <field name="terms_conditions18b_proposal"/>
+                      <field name="line_number_19"/>
+                      <field name="line_number_19a"/>
+                      <field name="terms_conditions19a_proposal"/>
+                      <field name="line_number_20"/>
+                      <field name="line_number_20a"/>
+                      <field name="terms_conditions20a_proposal"/>
+                      <field name="line_number_21"/>
+                      <field name="line_number_21a"/>
+                      <field name="terms_conditions21a_proposal"/>
+                      <field name="terms_conditions_ud1"/>
+                      <field name="terms_conditions_ud2"/>
+                      <field name="terms_conditions_ud3"/>
+                      <field name="terms_conditions_ud4"/>
+                      <field name="terms_conditions_ud5"/>
+                  </group>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record id="terms_conditions_action" model="ir.actions.act_window">
+      <field name="name">Terms Conditions</field>
+      <field name="res_model">terms.conditions</field>
+      <field name="view_id" ref="terms_conditions_tree"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Set a new terms and conditions
+        </p>
+      </field>
+  </record>
+
+  <menuitem
+      id="crm_menu_project_category"
+      name="CHC Terms Conditions"
+      parent="sale.menu_sale_config"
+      action="terms_conditions_action"
+      sequence="2" groups="sales_team.group_sale_manager"/>
+
+</odoo>

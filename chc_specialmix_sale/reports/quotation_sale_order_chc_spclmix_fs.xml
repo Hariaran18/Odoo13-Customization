@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="external_layout_standard_v4">
+        <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+            <!--<div class="row" style="float: right;">
+              <div t-if="report_type == 'pdf'" style="text-align: right !important;">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-12">
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-if="company_id">
+                            <t t-set="company" t-value="company_id.sudo()"/>
+                        </t>
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 100px;width:100%;" alt="Logo"/>
+                    </t>
+                    <!--<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 100px;width:100%;" alt="Logo"/>-->
+                    <div class="row" style="padding-left:6%;padding-right:6%;">
+                      <div class="col-6">
+                        <t t-foreach="docs" t-as="doc">
+                          <span>OUR REF: <t t-esc="doc.fl_name"/></span><br/>
+                        </t>
+                      </div>
+                      <div class="col-6" style="text-align: right;">
+                        Page: <span class="page"/> / <span class="topage"/>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+            </div>
+
+            <!--<div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+                </div>
+            </div>-->
+        </div>
+
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
+                         adding d-inline class fixes the problem-->
+                    <li t-if="company.phone" class="list-inline-item d-inline">Phone: <span class="o_force_ltr" t-field="company.phone"/></li>
+                    <li t-if="company.email" class="list-inline-item d-inline">Email: <span t-field="company.email"/></li>
+                    <li t-if="company.website" class="list-inline-item d-inline">Web: <span t-field="company.website"/></li>
+                    <li t-if="company.vat" class="list-inline-item d-inline"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+                </ul>
+
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                   <p align="center">No. A-2-9, Pusat Perdagangan Kuchai, No. 2, Jalan 1/127, Off Jalan Kuchai Lama, 58200 Kuala Lumpur.<br/>
+                       Tel: 03-7981 5828, 7981 1858, 7981 1852 Fax: 03-7981 1851</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="external_layout_v4">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.key}}"><t t-raw="0"/></t>
+        <t t-else="else" t-call="chc_specialmix_sale.external_layout_standard_v4"><t t-raw="0"/></t>
+
+    </template>
+
+    <template id="report_quotation_sale_order_fs">
+    <t t-call="chc_specialmix_sale.external_layout_v4">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.html_container">
+                        <div class="page" style="page-break-after: always; padding-left:6%;padding-right:6%;">
+                        <t t-if="not o and doc">
+                            <t t-set="o" t-value="doc"/>
+                            </t>
+                            <t t-if="company_id">
+                            <t t-set="company" t-value="company_id.sudo()"></t>
+                            </t>
+                            <t t-if="o and 'company_id' in o and not company_id">
+                            <t t-set="company" t-value="o.company_id.sudo()"></t>
+                        </t>
+                        <div t-attf-class="o_company_#{company.id}_layout header" t-att-style="report_header_style">
+                            <div class="o_background_header">
+                            <div class="float-right">
+                                <h3 class="mt0 text-right" t-field="company.report_header"/>
+                            </div>
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                            <div class="clearfix mb8"/>
+                            </div>
+                        </div>
+                            <div class="Quote Ref">
+                                <div class="quoterefcontent">
+                                    <!--<span>OUR REF: <t t-esc="doc.fl_name"/></span><br />-->
+                                    <span>Date: <t t-esc="doc.date_order" t-options='{"widget": "date"}'/></span><br />
+                                </div>
+                            </div>
+                            <p></p>
+                            <div style="width: 100%; display: table;">
+                                <div style="display: table-row; height: 100px;">
+                                    <div style="width: 60%; display: table-cell;">
+                                        <div class="Quote To">
+                                            <div class="panel"><b><t t-esc="doc.partner_id.name"/></b></div>
+                                            <t t-if="doc.partner_id.street">
+                                                <div class="quotetocontent">
+                                                    <span>
+                                                      <t t-esc="doc.partner_id.street"/><br/>
+                                                      <t t-if="doc.partner_id.street2">
+                                                      <t t-esc="doc.partner_id.street2"/><br/>
+                                                      </t>
+                                                      <t t-if="doc.partner_id.street3">
+                                                      <t t-esc="doc.partner_id.street3"/><br/>
+                                                      </t>
+                                                      <t t-esc="doc.partner_id.zip"/>, 
+                                                      <t t-esc="doc.partner_id.city"/><br/>
+                                                      <t t-esc="doc.partner_id.state"/></span><br/>
+                                                </div>
+                                            </t>
+                                            <t t-if="not doc.partner_id.street">
+                                                <div class="quotetocontent">
+                                                    <span>
+                                                        <t t-esc="doc.partner_id.comp_address"/><br/>
+                                                        <t t-if="doc.partner_id.postcode">
+                                                            <t t-esc="doc.partner_id.postcode"/>, 
+                                                        </t>
+                                                        <t t-if="doc.partner_id.town">
+                                                            <t t-esc="doc.partner_id.town"/>
+                                                        </t>
+                                                        <br/>
+                                                        <t t-if="doc.partner_id.state">
+                                                            <t t-esc="doc.partner_id.state"/>
+                                                        </t>
+                                                        <br/>
+                                                        <t t-if="doc.partner_id.country">
+                                                            <t t-esc="doc.partner_id.country"/>
+                                                        </t>
+                                                    </span><br/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div style="display: table-cell;" class="text-right">
+                                        <div class="Customer Details">
+                                            <div class="custdetail">
+                                                <br/>
+                                                <p align="left">TEL: <t t-esc="doc.partner_id.phone"/><br />
+                                                 FAX: <t t-esc="doc.partner_id.fax"/><br/>
+                                                 EMAIL: <t t-esc="doc.partner_id.email"/></p><br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--RM<t t-esc="doc.g20_custom_spclmix"/><img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                            <h3>Quotation Reference No: <t t-esc="doc.fl_name"/></h3>
+                            <h4><t t-esc="doc.date_order" t-options='{"widget": "date"}'/></h4>
+                            <h4><t t-esc="doc.partner_id.name"/></h4>-->
+                            <b>Attention: <t t-esc="doc.attn_to"/></b>
+                            <br></br>
+                            <b>Dear Sir/Miss,</b><br/>
+                            <b>Reply: Supply of Ready Mixed Concrete. <t t-esc="doc.project_reply_chc_spclmix"/></b><br/>
+                            <b>Project : <t t-esc="doc.project_quoted_name"/></b><br/>
+                            <hr size="5" width="100%" color="black"/>
+                            <p>With reference to the above matter, we are pleased to submit herewith our quotation for the following:-</p>
+                            <table style="margin-right: auto;width:90%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                <tr style="font-weight:bold;">
+                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:20%;"><b><t t-esc="doc.ud_grade_title_ns"/></b></th>
+                                    <th style="text-align:center;font_size:12px;border: 1px solid black;"><b><t t-esc="doc.ud_header_column1_ns"/><br/><t t-esc="doc.ud_sub_title1_ns"/></b></th>
+                                    <th style="text-align:center;font_size:12px;border: 1px solid black;"><b><t t-esc="doc.ud_header_column2_ns"/><br/><t t-esc="doc.ud_sub_title2_ns"/></b></th>
+                                    <th style="text-align:center;font_size:12px;border: 1px solid black;"><b><t t-esc="doc.ud_header_column3_ns"/><br/><t t-esc="doc.ud_sub_title3_ns"/></b></th>
+                                    <th style="text-align:center;font_size:12px;border: 1px solid black;"><b><t t-esc="doc.ud_header_column4_ns"/><br/><t t-esc="doc.ud_sub_title4_ns"/></b></th>
+                                    <th style="text-align:center;font_size:12px;border: 1px solid black;"><b><t t-esc="doc.ud_header_column5_ns"/><br/><t t-esc="doc.ud_sub_title5_ns"/></b></th>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">Mortar 1:3</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">RM<t t-esc="'%.2f'%(doc.mortar13_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">Mortar 1:4</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">RM<t t-esc="'%.2f'%(doc.mortar14_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">Mortar 1:5</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">RM<t t-esc="'%.2f'%(doc.mortar15_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;text-align: center;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">Mortar 1:6</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.default_price_newslump)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G15</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g15_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G20</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g20_default_price_newslump)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G25</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g25_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g25_custom_pump_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G30</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g30_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g30_custom_pump_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g30_custom_tremie1_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g30_custom_tremie2_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g30_custom_tremie3_ns)"/></td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G35</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g35_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g35_custom_pump_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g35_custom_tremie1_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g35_custom_tremie2_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g35_custom_tremie3_ns)"/></td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G40</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g40_custom_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g40_custom_pump_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g40_custom_tremie1_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g40_custom_tremie2_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g40_custom_tremie3_ns)"/></td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G45</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g45_custom_tremie1_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g45_custom_tremie2_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g45_custom_tremie3_ns)"/></td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G50</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g50_custom_tremie1_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g50_custom_tremie2_ns)"/></td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g50_custom_tremie3_ns)"/></td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G55</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g55_custom_tremie3_ns)"/></td>
+                                </tr>
+                                <tr style="text-align:center;font_size:12px;">
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">G60</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">--</td>
+                                    <td style="text-align:center;font_size:12px;border: 1px solid black;line-height:18pt;">RM<t t-esc="'%.2f'%(doc.g60_custom_tremie3_ns)"/></td>
+                                </tr>
+                            </table>
+
+                            <br></br>
+                            <p>The above price quoted shall be read in conjunction with Chin Hin Concrete’s standard of sale as stated in attached Terms and Conditions.</p><br/>
+                            <div class="termsconditions">
+                                <div class="panel"><b>Stated below is the TERMS and CONDITION of our offer :- </b></div>
+                                <p>The Above Price quoted is excluded G.S.T</p>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-3" style="text-align: left;">
+                                                Term of payment
+                                            </div>
+                                            <div class="col-9" style="text-align: left;">
+                                                :   <t t-esc="doc.payment_days_chc_spclmix"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" style="display:inline-block;">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-3" style="text-align: left;">
+                                                Prices Variation Clause
+                                            </div>
+                                            <div class="col-9" style="text-align: left;">
+                                                :   <t t-esc="doc.price_variation_clause_spclmix"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-3" style="text-align: left;">
+                                                JKR Mix<br/>
+                                                Waterproofing Mix<br/>
+                                                Chipping Mix
+                                            </div>
+                                            <div class="col-9" style="text-align: left;">
+                                                :   An additional of RM<t t-esc="doc.jkr_mix_chc_specialmix"/>/m3 from above supply rate.<br/>
+                                                :   An additional of RM<t t-esc="doc.waterproof_mix_specialmix"/>/m3 from above supply rate without warranty given.<br/>
+                                                :   An additional of RM<t t-esc="doc.chipping_mix_chc_specialmix"/>/m3 from above supply rate<br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<p>Term of payment	: <t t-esc="doc.payment_days_chc_spclmix"/></p>
+                                <p>Prices Variation Clause	: Our prices are subject to price fluctuation of raw materials (i.e.: bulk cement, fuel, sand, aggregates and etc.) for all orders in progress of deliveries. The difference between market revised price and our quotation calculation will be chargeable to you accordingly.</p>
+                                JKR Mix	: An additional of RM<t t-esc="doc.jkr_mix_chc_specialmix"/>/m3 from above supply rate.<br/>
+                                Waterproofing Mix	: An additional of RM<t t-esc="doc.waterproof_mix_specialmix"/>/m3 from above supply rate without warranty given.<br/>
+                                Chipping Mix : An additional RM<t t-esc="doc.chipping_mix_chc_specialmix"/>/m3 from above supply rate<br/>-->
+                                <br/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-3" style="text-align: left;">
+                                                Cancellation of Orders
+                                            </div>
+                                            <div class="col-9" style="text-align: left;">
+                                                :   Cancellation of orders or delivery less than 100m3 placed for Sunday and Public Holiday on delivery day shall be charge a mobilisation cost of RM 500.00
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Cancellation of Orders	: Cancellation of orders or delivery less than 100m3 placed for Sunday and Public Holiday on delivery day shall be charge a mobilisation cost of RM 500.00<br/>-->
+                                <t t-if="doc.special_remarks_spclmix" t-value="true">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-3" style="text-align: left;">
+                                                    Special Remarks
+                                                </div>
+                                                <div class="col-9" style="text-align: left;">
+                                                    :   <t t-esc="doc.special_remarks_spclmix"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<p>Special Remarks : <t t-esc="doc.special_remarks_spclmix"/></p>-->
+                                </t>
+                            </div>
+                            <!--<t t-if="doc.ud_grade_title" t-value="true">
+                                <p>With reference to the above matter, we are pleased to submit herewith our quotation for the following: <br/></p>
+                            </t>-->
+                            <br/>
+                            <t t-set="sri" t-value="[]"/>
+                            <t t-foreach="doc.ud_grade_ids" t-as="table_line">
+                                <t t-set="sri" t-value="sri+[table_line.table_header]"/>
+                            </t>
+
+<!--                            <t t-foreach="doc.ud_grade_ids" t-as="table_line">-->
+<!--                                <t t-if="table_line.table_header.name" t-value="true">-->
+                            <t t-foreach="set(sri)" t-as="sr">
+<!--                                <div><strong t-esc="sr.name"/></div>-->
+                                <div><p></p></div>
+                                <t t-set="foo" t-value="False"/>
+                                    <table style="margin-right: auto;width:100%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                            <t t-foreach="doc.ud_grade_ids" t-as="table_line">
+                                                <t t-if="foo==False">
+                                                    <t t-if="sr.name==table_line.table_header.name">
+                                                        <thead>
+                                                            <tr style="font-weight:bold;">
+                                                                <t t-if="table_line.table_header.ud_grade_title_v1" t-value="true">
+                                                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:16%;"><b><t t-esc="table_line.table_header.ud_grade_title_v1"/></b></th>
+                                                                </t>
+                                                                <t t-if="table_line.table_header.ud_header_column1_v1" t-value="true">
+                                                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:16%;"><b><t t-esc="table_line.table_header.ud_header_column1_v1"/><br/><t t-esc="table_line.table_header.ud_subtitle1_v1"/></b></th>
+                                                                </t>
+                                                                <t t-if="table_line.table_header.ud_header_column2_v1" t-value="true">
+                                                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:16%;"><b><t t-esc="table_line.table_header.ud_header_column2_v1"/><br/><t t-esc="table_line.table_header.ud_subtitle2_v1"/></b></th>
+                                                                </t>
+                                                                <t t-if="table_line.table_header.ud_header_column3_v1" t-value="true">
+                                                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:16%;"><b><t t-esc="table_line.table_header.ud_header_column3_v1"/><br/><t t-esc="table_line.table_header.ud_subtitle3_v1"/></b></th>
+                                                                </t>
+                                                                <t t-if="table_line.table_header.ud_header_column4_v1" t-value="true">
+                                                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:16%;"><b><t t-esc="table_line.table_header.ud_header_column4_v1"/><br/><t t-esc="table_line.table_header.ud_subtitle4_v1"/></b></th>
+                                                                </t>
+                                                                <t t-if="table_line.table_header.ud_header_column5_v1" t-value="true">
+                                                                    <th style="text-align:center;font_size:12px;border: 1px solid black;width:16%;"><b><t t-esc="table_line.table_header.ud_header_column5_v1"/><br/><t t-esc="table_line.table_header.ud_subtitle5_v1"/></b></th>
+                                                                </t>
+                                                            </tr>
+                                                        </thead>
+                                                         <t t-set="foo" t-value="True"/>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                            <t t-foreach="doc.ud_grade_ids" t-as="table_line">
+                                                <t t-if="sr.name==table_line.table_header.name">
+                                                    <tbody class="sale_tbody">
+                                                <tr rowspan="2">
+                                                    <t t-if="table_line.table_header.ud_grade_title_v1" t-value="true">
+                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;"><t t-esc="table_line.name"/></td>
+                                                    </t>
+                                                    <t t-if="table_line.table_header.ud_header_column1_v1" t-value="true">
+                                                        <td>
+                                                            <table style="margin-right: auto;width:100%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                                                <t t-if="table_line.price_normal == '0'">
+                                                                    <t t-set="table_line.price_normal" t-value="0.00"/>
+                                                                    <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_normal)"/></td>
+                                                                </t>
+
+                                                                <t t-else="table_line.price_normal" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_normal)"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                                <t t-if="table_line.specialcode_normal" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            <t t-esc="table_line.specialcode_normal"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                            </table>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="table_line.table_header.ud_header_column2_v1" t-value="true">
+                                                        <td>
+                                                            <table style="margin-right: auto;width:100%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                                                 <t t-if="table_line.price_pump == '0'">
+                                                                    <t t-set="table_line.price_pump" t-value="0.00"/>
+                                                                    <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_pump)"/></td>
+                                                                </t>
+
+                                                                <t t-else="table_line.price_pump" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_pump)"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                                <t t-if="table_line.specialcode_pump" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            <t t-esc="table_line.specialcode_pump"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                            </table>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="table_line.table_header.ud_header_column3_v1" t-value="true">
+                                                        <td>
+                                                            <table style="margin-right: auto;width:100%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                                                <t t-if="table_line.price_t1 == '0'">
+                                                                    <t t-set="table_line.price_t1" t-value="0.00"/>
+                                                                    <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_t1)"/></td>
+                                                                </t>
+
+                                                                <t t-else="table_line.price_t1" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_t1)"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                                <t t-if="table_line.specialcode_t1" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            <t t-esc="table_line.specialcode_t1"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                            </table>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="table_line.table_header.ud_header_column4_v1" t-value="true">
+                                                        <td>
+                                                            <table style="margin-right: auto;width:100%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                                                <t t-if="table_line.price_t2 == '0'">
+                                                                    <t t-set="table_line.price_t2" t-value="0.00"/>
+                                                                    <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_t2)"/></td>
+                                                                </t>
+
+                                                                <t t-else="table_line.price_t2" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_t2)"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                                <t t-if="not table_line.price_t2">
+                                                                    <tr style="border: 1px solid black;"></tr>
+                                                                </t>
+                                                                <t t-if="table_line.specialcode_t2" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            <t t-esc="table_line.specialcode_t2"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                                <t t-if="not table_line.specialcode_t2">
+                                                                    <tr style="border: 1px solid black;"></tr>
+                                                                </t>
+                                                            </table>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="table_line.table_header.ud_header_column5_v1" t-value="true">
+                                                        <td>
+                                                            <table style="margin-right: auto;width:100%;height:80%;line-height:16pt;font-size:12px;border: 1px solid black;">
+                                                                <t t-if="table_line.price_t3 == '0'">
+                                                                    <t t-set="table_line.price_t3" t-value="0.00"/>
+                                                                    <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_t3)"/></td>
+                                                                </t>
+
+                                                                <t t-else="table_line.price_t3" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            RM<t t-esc="'%.2f'%(table_line.price_t3)"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                                <t t-if="table_line.specialcode_t3" t-value="true">
+                                                                    <tr>
+                                                                        <td style="text-align:center;font_size:12px;border: 1px solid black;">
+                                                                            <t t-esc="table_line.specialcode_t3"/></td>
+                                                                    </tr>
+                                                                </t>
+                                                            </table>
+                                                        </td>
+                                                    </t>
+                                                </tr>
+                                            </tbody>
+                                                </t>
+                                            </t>
+                                    </table>
+                            </t>
+<!--                                </t>-->
+<!--                            </t>-->
+<!--                                </t>-->
+<!--                            </t>-->
+                            <br></br>
+                            <div style="display:inline-block;">
+                                <p>We hope you will find our price competitive and should you require any further information, please contact us.</p>
+                                <p>Thank you.</p>
+                                <div style="width: 100%; display: table;">
+                                    <div style="display: table-row; height: 100px;">
+                                        <div style="display: table-cell;text-align:left;">
+                                            Yours faithfully,<br/>
+                                            <b><t t-esc="doc.company_id.name"/></b>
+                                            <br/>
+                                            <img t-attf-src="data:image/*;base64,{{doc.user_id.digital_signature}}" height="90" width="150"/><br/>
+                                            <b><t t-esc="doc.user_id.partner_id.name"/></b><br/>
+                                            <b><t t-esc="doc.user_id.partner_id.function"/></b><br/>
+                                            <b><t t-esc="doc.user_id.partner_id.phone"/></b>
+                                        </div>
+                                        <div style="display: table-cell;text-align:right;">
+                                            <div class="Quote Ref">
+                                                <div class="quoterefcontent">
+                                                    <br></br>
+                                                    <img t-attf-src="data:image/*;base64,{{doc.quotation_approver_spclmix_v1.digital_signature}}" height="90" width="150"/><br/>
+                                                    <br/>
+                                                    <b><t t-esc="doc.quotation_approver_spclmix_v1.name" style="text-align:left;"/></b><br/>
+                                                    <b align="left"><t t-esc="doc.quotation_approver_spclmix_v1.function" style="text-align:left;"/></b><br/>
+                                                    <b align="left"><t t-esc="doc.quotation_approver_spclmix_v1.phone" style="text-align:left;"/></b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr size="5" width="100%" color="black"/>
+                            </div>
+                        </div>
+                        <div class="page" style="page-break-after: always; padding-left:6%;padding-right:6%;">
+                            <p>Please duly sign and return the duplicate copy of this quotation to confirm your acceptance.</p>
+                            <p>I/We confirm and accept the above quotation and its term and Conditions of Sales.</p>
+                            <div style="width: 100%; display: table;">
+                                <div style="display: table-row; height: 100px;">
+                                    <div style="width: 50%; display: table-cell;">
+                                        <br></br>
+                                        <br></br>
+                                        <p>.........................................................................</p>
+                                        <p>Signature</p>
+                                        <br></br>
+                                        <p><b>Name      :</b>.......................................................</p>
+                                        <br></br>
+                                        <p><b>NRIC No   :</b>.......................................................</p>
+                                        <br></br>
+                                        <p><b>Date      :</b>.......................................................</p>
+                                        <br></br>
+                                        <p>Company Chop :</p>
+                                    </div>
+                                    <div class="col-4" style="display: table-cell;text-align:right;">
+                                        <br></br>
+                                        <br></br>
+                                        <p align="left">.........................................................................</p>
+                                        <p align="left">Witness Signature</p>
+                                        <br></br>
+                                        <p align="left"><b>Name      :</b>.......................................................</p>
+                                        <br></br>
+                                        <p align="left"><b>NRIC No   :</b>.......................................................</p>
+                                        <br></br>
+                                        <p align="left"><b>Date      :</b>.......................................................</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="termsconditions1">
+                            <div class="panel"><b style="font-size:17px">TERMS AND CONDITIONS OF SALES</b></div>
+                            <ul class="termslist1">
+                                <div><b style="font-size:14px">1.0 PRICES</b>
+                                    <ul>
+                                        <p>1.1 Prices are based on mix design and inclusive of normal retarders but exclude other admixtures such as super-plasticizer and water proofing agents.</p>
+                                    </ul>
+                                    <ul>
+                                        <p>1.2 Price will be maintained for deliveries made after normal working hours on weekdays as well as on Sundays and public holidays. A standby charges / extra charge of RM 10.00 per cubic meter will be added on for supplies commencing after 12.00 midnight.</p>
+                                    </ul>
+                                    <ul>
+                                        <p>1.3 Price are based on a single order or a single minimum delivery of 4.0 cubic meter. An additional cartage of RMIOO.OO per load will be charged if the quantity of single delivery is less than 4.0 cubic meter. Additional of cartage of RM120.00 per load will be charged if the quantity of single delivery is less than 2.0 cubic meter.</p>
+                                    </ul>
+                                    <ul>
+                                        <p>1.4 Price Variation Clause: Our price is subject to price variation of raw materials (i.e.: bulk cement, fuel, sand, aggregates and etc.) for all orders in progress of deliveries. The difference between market revised price and our quotation calculation will be chargeable to you accordingly.</p>
+                                    </ul>
+                                </div>
+                                <div><b style="font-size:14px">2.0 VALIDITY OF QUOTATION</b>
+                                    <ul>
+                                        <p>2.1 Price quote are valid up to fourteen (14) calendar days from the date hereof. Thereafter price are subject to change according to the rates raw materials and any other rates which may be imposed by the government which affect the cost of producing ready mixed concrete. </p>
+                                    </ul>
+                                </div>
+                                <div><b style="font-size:14px">3.0 CONCRETE QUALITY</b>
+                                    <ul>
+                                        <p>3.1 We manufacture and guarantee our concrete that follow MS 523: 1993 or BS 5328: 1990 except for temperature of fresh concrete unless otherwise stated.</p>
+                                    </ul>
+                                    <ul>
+                                        <p>3.2 Our liability, in the event that concrete is proven to be defective, shall be limited to the replacement of concrete for the affected portion at the structure only, which shall be based on a mutually agreed sum prior to the commencement at works.</p>
+                                    </ul>
+                                    <ul><p>3.3 Our Guarantee on our concrete quality excludes failure or rejects arising from:</p>
+                                        <ul><p>a)  Poor concrete placing, compaction and workmanship at site.</p></ul>
+                                        <ul><p>b)  Addition of water and/or admixtures by your personal at site,</p></ul>
+                                        <ul><p>c)  Placing time exceeding 2hours form time of batching due to delay at site unless otherwise stated.</p></ul>
+                                        <ul><p>d)  Placing concrete when it is raining</p></ul>
+                                    </ul>
+                                    <ul>
+                                        <p>3.4 Testing of concrete shall be done in accordance to standard BSI 881 : 1983</p>
+                                    </ul>
+                                    <ul>
+                                        <p>3.5 Slumps test, cube making and testing concrete cubes carried out in our own laboratory will be done free of charge. The said test will be carried out upon request in writing only</p>
+                                    </ul>
+                                    <ul>
+                                        <p>3.6 Cost of all test carried out by independent laboratories at your request will be borne by your good self.</p>
+                                    </ul>
+                                    <ul>
+                                        <p>3.7 Any non-compliance of standard cube strength result must be notified to us in writing within 7 days from the cube test report. We hereby reserve the right to assess the in-situ strength of the concrete elements in accordance of the test results shall be based on BS 6089: 1 981 for compliance.</p>
+                                    </ul>
+                                </div><br/>
+                                <div><b style="font-size:14px">4.0 DELIVERY</b>
+                                    <ul>
+                                        <p>4.1 The customer shall be responsible to provide accessible and well-compacted roads for easy transportation</p>
+                                    </ul>
+                                    <ul>
+                                        <p>4.2 All Delivery Orders issued should be signed, stamped and return to us within Three (3) days from the date of supply. In the event of Delivery Orders being misplaced or not signed by your representative during the supply, we reserve the right to invoice based on the total progress or the final confirmed quantity as shown on the delivery order</p>
+                                    </ul>
+                                    <ul>
+                                        <p>4.3 We shall not responsible for the failure to make deliveries when prevented by strikes, labor trouble, lockouts, accidents and breakdown in machinery or any other unforeseen circumstances beyond the company’s control.</p>
+                                    </ul>
+                                </div>
+                                <div><b style="font-size:14px">5.0 TERMS OF PAYMENT</b>
+                                    <ul>
+                                        <p>5.1 Payment terms are as per quotation</p>
+                                    </ul>
+                                    <ul>
+                                        <p>5.2 An interest charged 1.5% per month will be levied on overdue accounts</p>
+                                    </ul>
+                                </div>
+                                <div><b style="font-size:14px">6.0 OTHER TERMS AND CONDITIONS</b>
+                                    <ul><p>6.1 Any discrepancy in delivered quantity should be reported in writing to Chin Hin Concrete (K L) Sdn Bhd within Three (3) days from the delivery date. The reported discrepancy in the delivered quantity shall be determined by joint measurement at site in accordance with the Standard Method of Measurement for Building Works and the following wastage in percentages must be allowed tor inclusion in the final calculation of volume.</p>
+                                        <ul><p>a) 3% for columns</p></ul>
+                                        <ul><p>b) 5% for formed slabs</p></ul>
+                                        <ul><p>c) 13% for ground structures e.g. footing. ground beams and slabs</p></ul>
+                                    </ul>
+                                </div>
+                            </ul>
+                        </div>
+                    </t>
+                </t>
+        </t>
+    </template>
+</odoo>

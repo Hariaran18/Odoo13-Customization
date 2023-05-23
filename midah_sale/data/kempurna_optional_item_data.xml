@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="optional_item1" model="kmoptional.items">
+            <field name="name">Extra RM3.15/no of frame for "Recess In" Mortise Lockset Template.</field>
+        </record>
+        <record id="optional_item2" model="kmoptional.items">
+            <field name="name">Extra RM3.15/no of frame for 100mm normal primer at bottom of frame.</field>
+        </record>
+        <record id="optional_item3" model="kmoptional.items">
+            <field name="name">Extra RM4.50/no of frame for 100mm anti rust paint brand Kansai DP1009 Grey Green at bottom of frame.</field>
+        </record>
+        <record id="optional_item4" model="kmoptional.items">
+            <field name="name">Extra RM8.40/no of frame for 150mm epoxy coating Brand Nippon EA9 white BS9102 at bottom of frame.</field>
+        </record>
+        <record id="optional_item5" model="kmoptional.items">
+            <field name="name">Extra RM3.675 of frame for cross cutting at bottom of frame.</field>
+        </record>
+        <record id="optional_item6" model="kmoptional.items">
+            <field name="name">RM6.00/no of frame for 200mm anti rust Paint Kansai DP1009 Grey Green at bottom of frame.</field>
+        </record>
+    </data>
+</odoo>

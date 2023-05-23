@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View  -->
+    <record id="sale_order_inherit_new" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Optional Items/Terms_KMPR" attrs="{'invisible': [('company_id', 'not in', [4,5,12,13])]}">
+                    <group>
+                        <group>
+                            <field name="optional_item1_KMPR" string="Optional Item1 : "/>
+                            <field name="optional_item2_KMPR" string="Optional Item2 : "/>
+                            <field name="optional_item3_KMPR" string="Optional Item3 : "/>
+                            <field name="optional_item4_KMPR" string="Optional Item4 : "/>
+                            <field name="optional_item5_KMPR" string="Optional Item5 : "/>
+                            <field name="optional_item6_KMPR" string="Optional Item6 : "/>
+                            <field name="quot_optional_item1_fs" string="Optional Item7 : "/>
+                            <field name="quot_optional_item2_fs" string="Optional Item8 : "/>
+                        </group>
+                        <group>
+                            <field name="quot_validity_fs" string="Validity (Days): "/>
+                            <field name="quot_terms_fs" string="Terms (Days): "/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

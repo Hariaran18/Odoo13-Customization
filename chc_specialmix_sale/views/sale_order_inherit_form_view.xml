@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View  -->
+    <record id="sale_order_inherit_new" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="quotation_approver_spclmix" invisible="1"/>
+                <field name="quotation_approver_spclmix_v1" attrs="{'invisible': [('company_id', '!=', 11)]}"/>
+                <!--<field name="quotation_approver_signature" attrs="{'invisible': [('company_id', '!=', 11)]}"/>
+                <field name="quotation_salesperson_signature" attrs="{'invisible': [('company_id', '!=', 11)]}"/>-->
+            </xpath>
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Terms/SpecialMixHeader" attrs="{'invisible': [('company_id', '!=', 11)]}">
+                    <group>
+                        <group>
+                            <field name="jkr_mix_chc_specialmix" string="JKR Mix : "/>
+                            <field name="waterproof_mix_specialmix" string="Water Proof Mix : "/>
+                            <field name="chipping_mix_chc_specialmix" string="Chipping Mix : "/>
+                            <field name="payment_days_chc_spclmix" string="Payment Terms : "/>
+                            <field name="price_variation_clause_spclmix" string="Price Variation Clause : "/>
+                            <!--<field name="default_price_spclmix" string="Mortar 1:6 Base Price : "/>
+                            <field name="g20_default_price_spclmix" string="G20 Base Price : "/>-->
+                        </group>
+                        <group>
+                            <field name="project_reply_chc_spclmix" string="Project Reply"/>
+                            <field name="reference_link_chc_spclmix" string="Reference Link : "/>
+                            <field name="special_remarks_spclmix" string="Special Remarks"/>
+                            <field name="mortar13_custom" string="Mortar 1:3 Value" invisible="1"/>
+                            <field name="mortar14_custom" string="Mortar 1:4 Value" invisible="1"/>
+                            <field name="mortar15_custom" string="Mortar 1:5 Value" invisible="1"/>
+                            <field name="g15_custom" string="G15 Value" invisible="1"/>
+                            <!--<field name="g20_custom" string="G20 Value" invisible="1"/>-->
+                            <field name="g25_custom" string="G25 Value" invisible="1"/>
+                            <field name="g30_custom" string="G30 Value" invisible="1"/>
+                            <field name="g35_custom" string="G30 Value" invisible="1"/>
+                            <field name="g40_custom" string="G30 Value" invisible="1"/>
+                            <!--<field name="g25_custom_pump" string="G25 Pump Mix: " invisible="1"/>
+                            <field name="g30_custom_pump" string="G30 Pump Mix: " invisible="1"/>
+                            <field name="g35_custom_pump" string="G35 Pump Mix: " invisible="1"/>
+                            <field name="g40_custom_pump" string="G40 Pump Mix: " invisible="1"/>-->
+                        </group>
+                        <!--<group string="Special Mix Table Header">
+                            <field name="ud_grade_title" string="Grade Title : "/>
+                            <field name="ud_header_column1" string="Header Title1 : "/>
+                            <field name="ud_subtitle1"/>
+                            <field name="ud_header_column2" string="Header Title2 : "/>
+                            <field name="ud_subtitle2"/>
+                            <field name="ud_header_column3" string="Header Title3 : "/>
+                            <field name="ud_subtitle3"/>
+                            <field name="ud_header_column4" string="Header Title4 : "/>
+                            <field name="ud_subtitle4"/>
+                            <field name="ud_header_column5" string="Header Title5 : "/>
+                            <field name="ud_subtitle5"/>
+                        </group>-->
+                    </group>
+                </page>
+                <!--<page string="DefaultMixValues_SPCLMIX" attrs="{'invisible': [('company_id', '!=', 11)]}">
+                    <group>
+                        <group string="Normal Mix Calculated">
+                            <field name="mortar13_custom" string="Mortar 1:3 Mix Value"/>
+                            <field name="mortar14_custom" string="Mortar 1:4 Mix Value"/>
+                            <field name="mortar15_custom" string="Mortar 1:5 Mix Value"/>
+                            <field name="g15_custom" string="G15 Mix Value"/>
+                            <field name="g25_custom" string="G25 Mix Value"/>
+                            <field name="g30_custom" string="G30 Mix Value"/>
+                            <field name="g35_custom" string="G35 Mix Value"/>
+                            <field name="g40_custom" string="G40 Mix Value"/>
+                        </group>
+                        <group string="Pump Mix Calculated">
+                            <field name="g25_custom_pump" string="G25 Pump Mix: "/>
+                            <field name="g30_custom_pump" string="G30 Pump Mix: "/>
+                            <field name="g35_custom_pump" string="G35 Pump Mix: "/>
+                            <field name="g40_custom_pump" string="G40 Pump Mix: "/>
+                        </group>
+                        <group string="Tremie 1 Calculated">
+                            <field name="g30_custom_tremie1" string="G30 Tremie1 Value: "/>
+                            <field name="g35_custom_tremie1" string="G35 Tremie1 Value: "/>
+                            <field name="g40_custom_tremie1" string="G40 Tremie1 Value: "/>
+                            <field name="g45_custom_tremie1" string="G45 Tremie1 Value: "/>
+                            <field name="g50_custom_tremie1" string="G50 Tremie1 Value: "/>
+                        </group>
+                        <group string="Tremie 2 Calculated">
+                            <field name="g30_custom_tremie2" string="G30 Tremie2 Value: "/>
+                            <field name="g35_custom_tremie2" string="G35 Tremie2 Value: "/>
+                            <field name="g40_custom_tremie2" string="G40 Tremie2 Value: "/>
+                            <field name="g45_custom_tremie2" string="G45 Tremie2 Value: "/>
+                            <field name="g50_custom_tremie2" string="G50 Tremie2 Value: "/>
+                        </group>
+                        <group string="Tremie 3 Calculated">
+                            <field name="g30_custom_tremie3" string="G30 Tremie3 Value: "/>
+                            <field name="g35_custom_tremie3" string="G35 Tremie3 Value: "/>
+                            <field name="g40_custom_tremie3" string="G40 Tremie3 Value: "/>
+                            <field name="g45_custom_tremie3" string="G45 Tremie3 Value: "/>
+                            <field name="g50_custom_tremie3" string="G50 Tremie3 Value: "/>
+                            <field name="g55_custom_tremie3" string="G55 Tremie3 Value: "/>
+                            <field name="g60_custom_tremie3" string="G60 Tremie3 Value: "/>
+                        </group>
+                    </group>
+                </page>-->
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_grade_ids,grade.ids,model_grade_ids,base.group_user,1,1,1,1
+access_header_ids,header.ids,model_header_ids,base.group_user,1,1,1,1

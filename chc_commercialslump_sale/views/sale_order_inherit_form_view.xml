@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View  -->
+    <record id="sale_order_inherit_new" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="PaymentTerms_CommercialSlump" attrs="{'invisible': [('company_id', '!=', 11)]}">
+                    <group>
+                        <group>
+                            <field name="jkr_mix_chc_commercialslump" string="JKR Mix : "/>
+                            <field name="waterproof_mix_commercialslump" string="Water Proof Mix : "/>
+                            <field name="chipping_mix_chc_commercialslump" string="Chipping Mix : "/>
+                            <field name="payment_days_chc_newslump" string="Payment Days : "/>
+                            <field name="price_variation_clause_newslump" string="Price Variation Clause : "/>
+                            <field name="default_price_newslump" string="Mortar 1:6 Base Price : "/>
+                            <field name="g20_default_price_newslump" string="G20 Base Price : "/>
+                        </group>
+                        <group>
+                            <field name="project_reply_chc_newslump" string="Project Reply"/>
+                            <field name="reference_link_chc_newslump" string="Reference Link : "/>
+                            <field name="special_remarks_newslump" string="Special Remarks"/>
+                        </group>
+                        <group string="Matrix Table Header Values">
+                            <field name="ud_grade_title_ns"/>
+                            <field name="ud_header_column1_ns"/>
+                            <field name="ud_sub_title1_ns"/>
+                            <field name="ud_header_column2_ns"/>
+                            <field name="ud_sub_title2_ns"/>
+                            <field name="ud_header_column3_ns"/>
+                            <field name="ud_sub_title3_ns"/>
+                            <field name="ud_header_column4_ns"/>
+                            <field name="ud_sub_title4_ns"/>
+                            <field name="ud_header_column5_ns"/>
+                            <field name="ud_sub_title5_ns"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

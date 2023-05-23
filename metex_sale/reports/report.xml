@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <report
+            string="Print Quotation Line_MTX"
+            id="print_report_quotation_sale_order_fs"
+            model="sale.order"
+            report_type="qweb-pdf"
+            name="metex_sale.report_quotation_sale_order_fs"
+            file="metex_sale.report_quotation_sale_order_fs"
+    />
+</odoo>

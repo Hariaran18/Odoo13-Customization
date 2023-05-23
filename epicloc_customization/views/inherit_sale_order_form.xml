@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id='epicloc_sale_order_form_extend' model='ir.ui.view'>
+            <field name="name">Epicloc Sale Order Customization</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='product_id']" position="after">
+                    <field name="door_type" optional="show" string="Hardware Set"/>
+                </xpath>
+                <xpath expr="//page[@name='other_information']" position="after">
+                    <page string="Reference/Notes_EpicLoc" attrs="{'invisible': [('company_id', 'not in', [4,5,12,13])]}">
+                        <group string="Quotation Terms and Conditions">
+                            <group>
+                                <field name="quot_validity_epicloc"/>
+                                <field name="quot_terms_epicloc"/>
+                                <field name="quot_terms_epicloc2"/>
+                                <field name="quot_terms_epicloc3"/>
+                            </group>
+                            <group>
+                                <field name="so_number" string="Attachment"/>
+                                <field name="so_attach" widget="many2many_binary" string=""/>
+                            </group>
+                        </group>
+                        <group string="Additional Project Details">
+                            <field name="epicloc_tnc" widget="html" string="" placeholder="Add additional information about this project that need to be printed in Quotation"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id='epicloc_sale_order_form_extend2' model='ir.ui.view'>
+            <field name="name">Epicloc Sale Order Customization2</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='part_number']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='tax_id']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='discount']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='price_policy']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='fp_unit_price']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+    
+    

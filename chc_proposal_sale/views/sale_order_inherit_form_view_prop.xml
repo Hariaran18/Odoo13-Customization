@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View  -->
+    <record id="sale_order_inherit_new" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="BaseValues/Terms_CHC_Proposal" attrs="{'invisible': [('company_id', '!=', 11)]}">
+                    <group>
+                        <group>
+                            <field name="jkr_mix_chc_proposal" string="JKR Mix : "/>
+                            <field name="waterproof_mix_chc_proposal" string="Water Proof Mix : "/>
+                            <field name="chipping_mix_chc_proposal" string="Chipping Mix : "/>
+                            <!--<field name="default_price_proposal" string="Mortar 1:6 Base Price : "/>
+                            <field name="g20_default_price_proposal" string="G20 Base Price : "/>-->
+                        </group>
+                        <group>
+                            <field name="project_reply_chc_proposal" string="Project Reply"/>
+                            <field name="reference_link_chc_proposal" string="Reference Link : "/>
+                            <field name="termsandconditions_proposal" string="Terms and Conditions"/>
+                        </group>
+                        <!--<group string="Calculated Matrix Values">
+                            <field name="mortar13_custom_ns" string="Mortar 1:3 Calculated"/>
+                            <field name="mortar14_custom_ns" string="Mortar 1:4 Value"/>
+                            <field name="mortar15_custom_ns" string="Mortar 1:5 Value"/>
+                        </group>-->
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form View  -->
+    <record id="sale_order_inherit" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Optional Items/Terms_Timber" attrs="{'invisible': [('company_id', 'not in', [4,5,12,13])]}">
+                    <group>
+                        <group string="Optional Items Group-A">
+                            <field name="optional_item1_timber" string="Optional Item1 : "/>
+                            <field name="optional_item2_timber" string="Optional Item2 : "/>
+                            <field name="optional_item3_timber" string="Optional Item3 : "/>
+                            <field name="optional_item4_timber" string="Optional Item4 : "/>
+                            <field name="optional_item5_timber" string="Optional Item5 : "/>
+                            <field name="optional_item6_timber" string="Optional Item6 : "/>
+                        </group>
+                        <group string="Optional Items Group-B">
+                            <field name="optional_item7_timber" string="Optional Item7 : "/>
+                            <field name="optional_item8_timber" string="Optional Item8 : "/>
+                            <field name="optional_item9_timber" string="Optional Item9 : "/>
+                            <field name="optional_item10_timber" string="Optional Item10 : "/>
+                            <field name="optional_item11_timber" string="Optional Item11 : "/>
+                            <field name="optional_item12_timber" string="Optional Item12 : "/>
+                        </group>
+                        <group>
+                            <field name="quot_validity_timber" string="Quotation Validity (Days) : "/>
+                            <field name="quot_terms_timber" string="Terms (Free Text): "/>
+                            <field name="quot_price_validity_fs" string="Price Validity (Free Text): "/>
+                        </group>
+                    </group>
+                    <!-- ~~~ Code by Hari ~~~ -->
+                    <group string="Additional Terms &amp; Conditions">
+                        <field name="timber_tnc" widget="html" string=""/>
+                    </group>
+                    <!-- ~~~~~~~~~~~~~~~~~~~~ -->
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

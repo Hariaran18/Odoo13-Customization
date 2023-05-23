@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="external_layout_standard_v4_timber">
+        <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+            <!--<div class="row" style="float: right;">
+              <div t-if="report_type == 'pdf'" style="text-align: right !important;">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-4">
+                    <t t-foreach="docs" t-as="doc">
+                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 100px;width:100%;" alt="Logo"/>
+                    </t>
+                </div>
+                <div class="col-8 text-right">
+                    <p style="font-size:10px;"><b style="color:orange">MIDAH INDUSTRIES SDN. BHD. 199901004847 (479747-H)</b><br/>
+                                           (Subsidiary of Chin Hin Group Berhad)<br/>
+                                           Lot 41060, Jalan Haji Abdul Samat 2, Mukim Kapar, <br/>
+                                           Klang Utara (KU), 42200 Kapar, Selangor Darul Ehsan.<br/>
+                                            <b style="color:orange">T:</b> +603  3250 2828 (Hunting Lines)   <b style="color:orange">F:</b>  +603  3250 0398<br/>
+                                            <b style="color:orange">E:</b> misb@midahgroup.com (Fire Door Division)</p>
+                </div>
+
+                <!--<div class="col-9 text-right" style="margin-top:10px;" t-field="company.report_header" name="moto"/>-->
+            </div>
+
+            <!--<div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+                </div>
+            </div>-->
+        </div>
+
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
+                         adding d-inline class fixes the problem-->
+                    <li t-if="company.phone" class="list-inline-item d-inline">Phone: <span class="o_force_ltr" t-field="company.phone"/></li>
+                    <li t-if="company.email" class="list-inline-item d-inline">Email: <span t-field="company.email"/></li>
+                    <li t-if="company.website" class="list-inline-item d-inline">Web: <span t-field="company.website"/></li>
+                    <li t-if="company.vat" class="list-inline-item d-inline"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+                </ul>
+
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-muted" style="text-align: left">
+                   <img class="img img-responsive" src="/midah_firedoor_sale/static/src/img/Midah_Industries_footer_logo.PNG" style="max-height: 75px;"/>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="external_layout_v4_timber">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.key}}"><t t-raw="0"/></t>
+        <t t-else="else" t-call="midah_timber_sale.external_layout_standard_v4_timber"><t t-raw="0"/></t>
+
+    </template>
+
+    <template id="report_quotation_sale_order_fs">
+        <t t-call="midah_timber_sale.external_layout_v4_timber">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.html_container">
+                    <!--<div style="width: 100%; display: table;margin-top:-15px;">
+                        <div style="display: table-row; height: 5px;border-style: solid 1px;">
+                            <div style="width: 65%; display: table-cell;">
+                                <div class="Himage">
+                                    <img class="img img-responsive" src="/midah_timber_sale/static/src/img/midah.jpeg"/>
+                                </div>
+                            </div>
+                            <div style="display: table-cell;" class="text-right">
+                                <div class="Main Address">
+                                    <p style="font-size:12px" align="left"><b style="color:orange">MIDAH INDUSTRIES SDN. BHD. 199901004847 (479747-H)</b><br/>
+                                       (Subsidiary of Chin Hin Group Berhad)<br/>
+                                       Lot 41060, Jalan Haji Abdul Samat 2, Mukim Kapar, <br/>
+                                       Klang Utara (KU), 42200 Kapar, Selangor Darul Ehsan.<br/>
+                                        <b style="color:orange">T:</b> +603  3250 2828 (Hunting Lines)   <b style="color:orange">F:</b>  +603  3250 0398<br/>
+                                        <b style="color:orange">E:</b> misb@midahgroup.com (Fire Door Division)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <hr size="5" width="100%" color="black"/>
+                    <div class="page" style="page-break-after: always;">
+                    <t t-if="not o and doc">
+                        <t t-set="o" t-value="doc"/>
+                        </t>
+                        <t t-if="company_id">
+                        <t t-set="company" t-value="company_id.sudo()"></t>
+                        </t>
+                        <t t-if="o and 'company_id' in o and not company_id">
+                        <t t-set="company" t-value="o.company_id.sudo()"></t>
+                    </t>
+                    <div t-attf-class="o_company_#{company.id}_layout header" t-att-style="report_header_style">
+                        <div class="o_background_header">
+                        <div class="float-right">
+                            <h3 class="mt0 text-right" t-field="company.report_header"/>
+                        </div>
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                        <div class="clearfix mb8"/>
+                        </div>
+                    </div>
+                        <div style="width: 100%; display: table;">
+                            <div style="display: table-row; height: 100px;">
+                                <div style="width: 50%; display: table-cell;">
+                                    <div class="Quote To">
+                                            <div class="panel"><b><t t-esc="doc.partner_id.name"/></b></div>
+                                            <t t-if="doc.partner_id.street">
+                                                <div class="quotetocontent">
+                                                    <span>
+                                                      <t t-esc="doc.partner_id.street"/><br/>
+                                                      <t t-if="doc.partner_id.street2">
+                                                      <t t-esc="doc.partner_id.street2"/><br/>
+                                                      </t>
+                                                      <t t-if="doc.partner_id.street3">
+                                                      <t t-esc="doc.partner_id.street3"/><br/>
+                                                      </t>
+                                                      <t t-esc="doc.partner_id.zip"/>, 
+                                                      <t t-esc="doc.partner_id.city"/><br/>
+                                                      <t t-esc="doc.partner_id.state"/></span><br/>
+                                                </div>
+                                            </t>
+                                            <t t-if="not doc.partner_id.street">
+                                                <div class="quotetocontent">
+                                                    <span>
+                                                        <t t-esc="doc.partner_id.comp_address"/><br/>
+                                                        <t t-if="doc.partner_id.postcode">
+                                                            <t t-esc="doc.partner_id.postcode"/>, 
+                                                        </t>
+                                                        <t t-if="doc.partner_id.town">
+                                                            <t t-esc="doc.partner_id.town"/>
+                                                        </t>
+                                                        <br/>
+                                                        <t t-if="doc.partner_id.state">
+                                                            <t t-esc="doc.partner_id.state"/>
+                                                        </t>
+                                                        <br/>
+                                                        <t t-if="doc.partner_id.country">
+                                                            <t t-esc="doc.partner_id.country"/>
+                                                        </t>
+                                                    </span><br/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                </div>
+                                <div style="display: table-cell;" class="text-right">
+                                    <div class="Quote Ref">
+                                        <div class="panel"><b>Quotation Reference:</b></div>
+                                        <div class="quoterefcontent">
+                                            <span><t t-esc="doc.fl_name"/></span><br />
+                                            <span>Date: <t t-esc="doc.date_order" t-options='{"widget": "date"}'/></span><br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br></br>
+                        <!--<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                        <h3>Quotation Reference No: <t t-esc="doc.fl_name"/></h3>
+                        <h4><t t-esc="doc.date_order" t-options='{"widget": "date"}'/></h4>
+                        <h4><t t-esc="doc.partner_id.name"/></h4>-->
+                        <b>Attention: <t t-esc="doc.attn_to"/></b>
+                        <br></br>
+                        <b>Dear Sir/Miss,</b><br/>
+                        <b>SITE : <t t-esc="doc.project_quoted_name"/></b><br/>
+                        <b>REF   : 	QUOTATION FOR SUPPLY OF TIMBER PRODUCTS</b><br/>
+                        <hr size="5" width="100%" color="black"/>
+                        <!--<h3><t t-esc="doc.res.partner.quote_to"/></h3>
+                        <p>With reference to the above, we are pleased to forward our quotation for your perusal and kind consideration.</p>
+
+                        <div class="sectionA">
+                            <div class="panel"><h4>Sction A</h4></div>
+                            <span><p>Supply of <b> ‘HFI’ Electro Galvanised 1.1mm Single Rebated Metal Door Frame with Groveline Profile HFI 9 (54 x 150mm)</b> c/w <b> Slot in Type ‘HFI’ 2.5 x 89 x 127mm (SUS304) Stainless Steel Hinges</b>  c/w wire ties, striker plate, spreader bar and welded mitre joint.</p></span>
+                        </div>-->
+                        <br></br>
+
+                        <!--<table border="1" style="width:80%;">
+                                <tr style="font-weight:bold;">
+                                    <th>SIZE</th>
+                                    <th>QTY</th>
+                                    <th>RATE/NO</th>
+                                    <th>AMOUNT</th>
+                                </tr>
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                        <tr>
+                                            <td><span t-field="line.name"/></td>
+                                            <td><span t-field="line.product_uom_qty"/></td>
+                                            <td><span t-field="line.price_unit"/></td>
+                                            <td><span t-field="line.price_subtotal"/></td>
+                                        </tr>
+                                    </tr>
+                                </t>
+
+                        </table>-->
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th name="th_description" class="text-left">SIZE</th>
+                                    <th name="th_quantity" class="text-right">QTY</th>
+                                    <th name="th_priceunit" class="text-right">RATE/NO</th>
+                                    <th name="th_taxname1" class="text-right">SST</th>
+                                    <th name="th_taxinclrate1" class="text-right">RATE/NO<br/>(Incl. SST)</th>
+                                    <th name="th_subtotal" class="text-right">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody class="sale_tbody">
+
+                                <t t-set="current_subtotal" t-value="0"/>
+
+                                <t t-foreach="doc.order_line" t-as="line">
+
+                                    <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                        <t t-if="not line.display_type">
+                                            <td class="text-left"><span t-field="line.name"/></td>
+                                            <td class="text-right"><span t-field="line.product_uom_qty"/></td>
+                                            <td class="text-right"><span t-field="line.price_unit"/></td>
+                                            <td class="text-right">RM<span t-field="line.sstTax_fs_v4"/></td>
+                                            <td class="text-right">RM<span t-field="line.sstTax_fs_v5"/></td>
+                                            <td class="text-right"><span t-field="line.price_total"/></td>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <td name="td_section_line" colspan="99">
+                                                <span t-field="line.name"/> – All to manufacturer’s details.
+                                            </td>
+                                            <!--<t t-set="current_section" t-value="line"/>
+                                            <t t-set="current_subtotal" t-value="0"/>-->
+                                        </t>
+                                        <t t-if="line.display_type == 'line_note'">
+                                            <td name="td_note_line" colspan="99">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+
+                                    <!--<t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
+                                        <tr class="is-subtotal text-right">
+                                            <td name="td_section_subtotal" colspan="99">
+                                                <strong class="mr16">Subtotal</strong>
+                                                <span
+                                                    t-esc="current_subtotal"
+                                                    t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                                                />
+                                            </td>
+                                        </tr>
+                                    </t>-->
+                                </t>
+                            </tbody>
+                        </table>
+                        <p style="text-align:right; font-size:100%;">Total  : <b>RM <t t-esc="'{0:,.2f}'.format(doc.amount_total)"/> </b></p>
+                        <b>Note : <t t-esc="doc.quot_notes_timber"/></b><br/>
+                        <div class="optionalitems">
+                            <div class="panel"><b>Optional Items: </b></div>
+                            <ul class="itemlist">
+                                <div>
+                                    <t t-if="doc.optional_item1_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item1_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item1_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item2_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item2_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item2_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item3_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item3_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item3_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item4_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item4_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item4_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item5_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item5_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item5_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item6_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item6_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item6_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item7_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item7_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item7_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item8_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item8_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item8_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item9_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item9_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item9_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item10_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item10_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item10_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item11_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item11_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item11_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                                <div>
+                                    <t t-if="doc.optional_item12_timber != false">
+                                       <ul>
+                                          <p><t t-esc="doc.optional_item12_timber.name"/></p>
+                                       </ul>
+                                     </t>
+                                    <t t-if="doc.optional_item12_timber">
+                                        <p></p>
+                                     </t>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="termsconditions">
+                            <div class="panel"><b>Stated below is the TERMS and CONDITION of our offer :- </b></div>
+                            <ul class="termslist">
+                                <li><p>Validity of quotation      : <t t-esc="doc.quot_validity_timber"/> days or stock availability.</p></li>
+                                <li><p>Term           : <t t-esc="doc.quot_terms_timber"/></p></li>
+                                <li><p>Validity of prices  : Supply contract period <t t-esc="doc.quot_price_validity_fs"/> from the date of confirmation and subjected to version.</p></li>
+                                <li><p>Supply and delivery only.</p></li>
+                                <li><p><b>Above quoted is inclusive of SST and Subject to 0% GST.</b></p></li>
+                                <!-- <li><p>Delivery to site, base on full 3.0 tons load basis, unloading to be assisted by your general worker at site.</p></li>
+                                <li><p>All doors and frames are fabricated according to manufacturer’s specification and details.</p></li>
+                                <li><p>Timber is a natural grown product and will subject to changes due to variation of humidity and temperatures. We cannot therefore give any guarantee against minor shrinkage, warping.</p></li>
+                                <li><p>All door leaf that comes with special veneer plywood shall be undercoated and installed immediately.</p></li>
+                                <li><p>The door leaf are not suitable to be used or exposed at outdoor area.</p></li>
+                                <li><p>In the event if goods are rejected due to manufacturer’s defect, our liability shall under no circumstances exceed the price of the defective piece(s).</p></li>
+                                <li><p>Any defect should be reported within 7 days from date of purchase and no claim will be entertained if the goods had been worked upon in any way whatsoever.</p></li>
+                                <li><p>Any alteration made after commencement of work shall be treated as variation order.</p></li>
+                                <li><p>Keep the internal door leaf opened wide for ventilation/air circulation after the installation.</p></li>
+                                <li><p>Refer Ref : MICOS I attached.</p></li> -->
+                            </ul>
+                            <!-- ~~~ Code by Hari ~~~ -->
+                            <t t-if="doc.timber_tnc" t-raw="doc.timber_tnc">
+                                <p><t t-raw="doc.timber_tnc"/></p>
+                            </t>
+                            <!-- ~~~~~~~~~~~~~~~~~~~~ -->
+                        </div>
+                        <br></br>
+                        <!--<b><t t-esc="doc.company_id.name"/></b>
+                        <br></br>
+                        <b><t t-esc="doc.user_id.name"/></b><br/>
+                        <b>Department: <t t-esc="doc.team_id.name"/></b>-->
+                        <div style="display: inline-block;">
+                            <p>We trust that the above is in order and looking forward to your confirmation. Please do not hesitate to contact us for any further query.</p>
+                            <p>Thank you.</p>
+                            <div style="width: 100%; display: table;">
+                                <div style="display: table-row; height: 100px;">
+                                    <div style="width: 50%; display: table-cell;">
+                                        <p>Your's faithfully,<br/>
+                                        <b><t t-esc="doc.company_id.name"/></b></p><br/>
+                                        <br/>
+                                        <b><t t-esc="doc.saleperson_id.name"/>(<t t-esc="doc.saleperson_id.phone"/>)</b><br/>
+                                        <b><t t-esc="doc.saleperson_id.function"/></b><br/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <b>Reviewed by:</b><br/>
+                                        <b><t t-esc="doc.sales_reviewer_v2.name" style="text-align:left;"/>(<t t-esc="doc.sales_reviewer_v2.phone"/>)</b><br/>
+                                        <b align="left"><t t-esc="doc.sales_reviewer_v2.function" style="text-align:left;"/></b>
+                                    </div>
+                                    <div style="display: table-cell;" class="text-left">
+                                        <div class="Quote Ref">
+                                                <br/>
+                                            <div class="panel"><b>Agreed and Accepted The Above By Chop and Sign</b></div>
+                                            <div class="quoterefcontent">
+                                                <br/>
+                                                <br/>
+                                                <span><t t-esc="doc.partner_id.name"/></span><br/>
+                                                <b>Name: </b><br/>
+                                                <b>Date: </b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <p style="text-align:center"><b>[--** This is a computer generated quotation and no signature is required **--]</b></p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

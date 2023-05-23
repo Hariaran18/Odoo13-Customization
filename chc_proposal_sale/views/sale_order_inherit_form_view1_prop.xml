@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!--<record id="sale_order_inherit" model="ir.ui.view">
+        <field name="name">Sale Order Inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="DefaultMixValues_CHC_Proposal" attrs="{'invisible': [('company_id', '!=', 11)]}">
+                    <group>
+                        <group string="Normal Mix Calculated">
+                            <field name="mortar13_custom_prop" string="Mortar 1:3 Mix Value"/>
+                            <field name="mortar14_custom_prop" string="Mortar 1:4 Mix Value"/>
+                            <field name="mortar15_custom_prop" string="Mortar 1:5 Mix Value"/>
+                            <field name="g15_custom_prop" string="G15 Mix Value"/>
+                            <field name="g25_custom_prop" string="G25 Mix Value"/>
+                            <field name="g30_custom_prop" string="G30 Mix Value"/>
+                            <field name="g35_custom_prop" string="G35 Mix Value"/>
+                            <field name="g40_custom_prop" string="G40 Mix Value"/>
+                        </group>
+                        <group string="Pump Mix Calculated">
+                            <field name="g25_custom_pump_prop" string="G25 Pump Mix: "/>
+                            <field name="g30_custom_pump_prop" string="G30 Pump Mix: "/>
+                            <field name="g35_custom_pump_prop" string="G35 Pump Mix: "/>
+                            <field name="g40_custom_pump_prop" string="G40 Pump Mix: "/>
+                        </group>
+                        <group string="Tremie 1 Calculated">
+                            <field name="g30_custom_tremie1_prop" string="G30 Tremie1 Value: "/>
+                            <field name="g35_custom_tremie1_prop" string="G35 Tremie1 Value: "/>
+                            <field name="g40_custom_tremie1_prop" string="G40 Tremie1 Value: "/>
+                            <field name="g45_custom_tremie1_prop" string="G45 Tremie1 Value: "/>
+                            <field name="g50_custom_tremie1_prop" string="G50 Tremie1 Value: "/>
+                        </group>
+                        <group string="Tremie 2 Calculated">
+                            <field name="g30_custom_tremie2_prop" string="G30 Tremie2 Value: "/>
+                            <field name="g35_custom_tremie2_prop" string="G35 Tremie2 Value: "/>
+                            <field name="g40_custom_tremie2_prop" string="G40 Tremie2 Value: "/>
+                            <field name="g45_custom_tremie2_prop" string="G45 Tremie2 Value: "/>
+                            <field name="g50_custom_tremie2_prop" string="G50 Tremie2 Value: "/>
+                        </group>
+                        <group string="Tremie 3 Calculated">
+                            <field name="g30_custom_tremie3_prop" string="G30 Tremie3 Value: "/>
+                            <field name="g35_custom_tremie3_prop" string="G35 Tremie3 Value: "/>
+                            <field name="g40_custom_tremie3_prop" string="G40 Tremie3 Value: "/>
+                            <field name="g45_custom_tremie3_prop" string="G45 Tremie3 Value: "/>
+                            <field name="g50_custom_tremie3_prop" string="G50 Tremie3 Value: "/>
+                            <field name="g55_custom_tremie3_prop" string="G55 Tremie3 Value: "/>
+                            <field name="g60_custom_tremie3_prop" string="G60 Tremie3 Value: "/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>-->
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+  <record id="terms_conditions_tree" model="ir.ui.view">
+      <field name="name">optional.items.tree</field>
+      <field name="model">optional.items</field>
+      <field name="arch" type="xml">
+          <tree string="Projects">
+              <field name="name"/>
+          </tree>
+      </field>
+  </record>
+
+  <record id="terms_conditions_form" model="ir.ui.view">
+      <field name="name">optional.items.form</field>
+      <field name="model">optional.items</field>
+      <field name="priority" eval="1"/>
+      <field name="arch" type="xml">
+          <form string="Term">
+              <sheet>
+                  <group>
+                      <group>
+                          <field name="name"/>
+                      </group>
+                  </group>
+              </sheet>
+          </form>
+      </field>
+  </record>
+
+  <record id="terms_conditions_action" model="ir.actions.act_window">
+      <field name="name">Optional Items</field>
+      <field name="res_model">optional.items</field>
+      <field name="view_id" ref="terms_conditions_tree"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Set a new terms and conditions
+        </p>
+      </field>
+  </record>
+
+  <menuitem
+      id="crm_menu_project_category"
+      name="Midah_Timber_Optional Items"
+      parent="sale.menu_sale_config"
+      action="terms_conditions_action"
+      sequence="2" groups="sales_team.group_sale_manager"/>
+
+</odoo>

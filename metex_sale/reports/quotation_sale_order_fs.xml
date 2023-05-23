@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="external_layout_standard_v5">
+        <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+            <!--<div class="row" style="float: right;">
+              <div t-if="report_type == 'pdf'" style="text-align: right !important;">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-12">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 130px;width:100%;" alt="Logo"/>
+                </div>
+
+                <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+            </div>
+
+            <!--<div t-if="company.logo or company.report_header" class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" name="company_address">
+                    <div t-field="company.partner_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                    />
+                </div>
+            </div>-->
+        </div>
+
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+            <div style="width: 100%; display: table;">
+                <div style="display: table-row; height: 100px;">
+                    <div style="width: 50%; display: table-cell;">
+                        <p><b>METEX STEEL SDN. BHD.</b></p>
+                        <p>A-1-1 &amp; A-2-1, Pusat Perdagangan Kuchai</p>
+                        <p>No.2, Jalan 1/127, Off Jalan Kucahai Lama</p>
+                        <p>58200 Kuala Lumpur, Malaysia</p>
+                    </div>
+                    <div style="display: table-cell;" class="text-right">
+                        <p>T: +603 7983 8767 / +603 7987 8767</p>
+                        <p>F: +603 7987 8766</p>
+                        <p>E: info@metex.com.my</p>
+                        <p>www.metex.com.my</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="external_layout_v5">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.key}}"><t t-raw="0"/></t>
+        <t t-else="else" t-call="metex_sale.external_layout_standard_v5"><t t-raw="0"/></t>
+
+    </template>
+   <template id="report_quotation_footer5">
+        <!--<xpath expr="//footer" position="replace">-->
+            <div class="footer">
+                <div style="width: 100%; display: table;">
+                    <div style="display: table-row; height: 100px;">
+                        <div style="width: 50%; display: table-cell;">
+                            <p><b>METEX STEEL SDN. BHD.</b></p>
+                            <p>A-1-1 &amp; A-2-1, Pusat Perdagangan Kuchai</p>
+                            <p>No.2, Jalan 1/127, Off Jalan Kucahai Lama</p>
+                            <p>58200 Kuala Lumpur, Malaysia</p>
+                        </div>
+                        <div style="display: table-cell;" class="text-right">
+                            <p>T: +603 7983 8767 / +603 7987 8767</p>
+                            <p>F: +603 7987 8766</p>
+                            <p>E: info@metex.com.my</p>
+                            <p>www.metex.com.my</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--</xpath>-->
+    </template>
+
+    <template id="report_quotation_sale_order_fs">
+<!-- <t t-call="web.html_container"> -->
+          
+            <t t-call="metex_sale.external_layout_v5">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.html_container">
+                    <div class="container">
+
+                        <t t-if="not o and doc">
+                            <t t-set="o" t-value="doc"/>
+                            </t>
+                            <t t-if="company_id">
+                            <t t-set="company" t-value="company_id.sudo()"/>
+                            </t>
+                            <t t-if="o and 'company_id' in o and not company_id">
+                            <t t-set="company" t-value="o.company_id.sudo()"/>
+                        </t>
+                        <div t-attf-class="o_company_#{company.id}_layout header" t-att-style="report_header_style">
+                            <div class="o_background_header">
+                            <div class="float-right">
+                                <h3 class="mt0 text-right" t-field="company.report_header"/>
+                            </div>
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>hh
+                            <div class="clearfix mb8"/>
+                            </div>
+                        </div>
+                        <!--<div class="header">-->
+                          <!--<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>-->
+                        <!--</div>-->
+                        <b>Quotation Reference No: <t t-esc="doc.fl_name"/></b><br/>
+                        <b>Date: <t t-esc="doc.date_order" t-options="{&quot;widget&quot;: &quot;date&quot;}"/></b><br/>
+                        <!--<h4><t t-esc="doc.partner_id.name"/></h4>-->
+                        <br/>
+                        <div class="Quote To">
+                                <div class="panel"><b><t t-esc="doc.partner_id.name"/></b><br/></div>
+                                <div class="quotetocontent">
+                                    <span><t t-esc="doc.partner_id.street"/> <t t-esc="doc.partner_id.street2"/></span><br/>
+                                    <span><t t-esc="doc.partner_id.city"/> <t t-esc="doc.partner_id.state_id.name"/></span><br/>
+                                    <span><t t-esc="doc.partner_id.country_id.name"/> <t t-esc="doc.partner_id.zip"/> </span><br/>
+                                </div>
+                        </div>
+                        <b>Attention: <t t-esc="doc.attn_to"/></b>
+                        <p>Dear Madam/Sir,</p>
+                        <b><t t-esc="doc.project_quoted_name"/></b>
+                        <!--<h3><t t-esc="doc.res.partner.quote_to"/></h3>-->
+                        <p>We are pleased to append our quotation as follow:</p>
+                        <table border="1px solid" style="border:1px solid;width:100%;">
+                            <!--<thead>-->
+                                <tr style="font-weight:bold;border:1px solid;">
+                                    <th style="border:1px solid;width:5%;text-align:center;">S/N</th>
+                                    <th style="border:1px solid;">Particulars</th>
+                                    <th style="border:1px solid;">Descriptions</th>
+                                </tr>
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                               <!-- <tr>
+                                    <td>1</td>
+                                    <td>Sales Order No.</td>
+                                    <td>
+                                        <t t-esc="doc.quot_salesorder_num_fs"/>
+                                    </td>
+                                </tr>-->
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">1</td>
+                                    <td style="border:1px solid;">Product</td>
+                                    <td style="border:1px solid;">
+                                        <t t-if="doc.product_type_mtx" t-value="true">
+                                            <t t-esc="{False: False,'cut-to-size':'Cut-to-size mesh','standard_sheets':'Standard Sheets','hard_drawn_wires':'Hard Drawn Wires'}                                                  [doc.product_type_mtx]"/>
+                                            <t t-if="doc.quot_product_fs" t-value="true">
+                                                . (as per attached costing ref no.<t t-esc="doc.quot_product_fs"/>).
+                                            </t>
+                                        </t>
+                                       <!-- <t t-if="doc.product_type_mtx" t-value="standard_sheets">
+                                            <t t-if="doc.quot_product_fs" t-value="true">
+                                                Standard Sheets. (as per attached costing ref no.<t t-esc="doc.quot_product_fs"/>).
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.product_type_mtx" t-value="hard_drawn_wires">
+                                            <t t-if="doc.quot_product_fs" t-value="true">
+                                                Hard Drawn Wires (as per attached costing ref no.<t t-esc="doc.quot_product_fs"/>).
+                                            </t>
+                                        </t>-->
+
+                                        <t t-if="not doc.product_type_mtx">
+                                            Cut-to-size mesh
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">2</td>
+                                    <td style="border:1px solid;">Price</td>
+                                    <td style="border:1px solid;">
+                                        Less <t t-esc="doc.quot_price_contractor_fs"/>% and <t t-esc="doc.quot_price_distributor_fs"/>% (from our standard price list).
+                                        Price quoted is net delivered but exclude unloading at site.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">3</td>
+                                    <td style="border:1px solid;">Bending Charges</td>
+                                    <td style="border:1px solid;">
+                                        RM <t t-esc="doc.quot_bending_charges_fs"/>/bend.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">4</td>
+                                    <td style="border:1px solid;">Quotation Validity</td>
+                                    <td style="border:1px solid;">
+                                        <t t-esc="doc.quot_quotation_validity_fs"/> days from date of quotation.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">5</td>
+                                    <td style="border:1px solid;">Price validity of confirmed orders</td>
+                                    <td style="border:1px solid;">
+                                        <t t-esc="doc.quot_price_validity_of_fs"/> months from date of Purchase Order. Thereafter price may be revised according to
+                                                <ul style="list-style-type:none;">
+                                                <li><p>a) raw material cost.</p></li>
+                                                <li><p>b) prevailing market price of mesh.</p></li>
+                                                </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">6</td>
+                                    <td style="border:1px solid;">Terms of payment</td>
+                                    <td style="border:1px solid;">
+                                        <t t-esc="doc.quot_term_of_payment_fs"/> days from month-end statement date.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">7</td>
+                                    <td style="border:1px solid;">Delivery lead time</td>
+                                    <td style="border:1px solid;">
+                                        <t t-esc="doc.quot_delivery_lead_time_fs"/> days upon receipt of Purchase Order and finalization of technical details including Consultant Engineer’s approval.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">8</td>
+                                    <td style="border:1px solid;">Acceptance of Purchase Order</td>
+                                    <td style="border:1px solid;">
+                                        <t t-esc="doc.quot_acceptance_of_purchase_order_fs"/>
+                                        Please indicate our quotation number in your Purchase Order. All Purchase orders are subject to our final acceptance.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;border:1px solid;">9</td>
+                                    <td style="border:1px solid;">Special Remarks</td>
+                                    <td style="border:1px solid;"><t t-esc="doc.quot_spcl_remarks_fs"/></td>
+                                </tr>
+                                <!--<tr>
+                                    <td>9</td>
+                                    <td>Confirm Order</td>
+                                    <td>
+                                        <t t-esc="doc.quot_confirm_order_fs"/>
+                                    </td>
+                                </tr>-->
+                                <!--<tr>
+                                    <td>11</td>
+                                    <td>Reference Links</td>
+                                    <td>
+                                        <t t-esc="doc.quot_reference_link_fs"/>
+                                    </td>
+                                </tr>-->
+                            <!--</tbody>-->
+                        </table>
+                        <p>We trust the above are in order. Should you require any further assistance, please do not hesitate to contact us.</p>
+                        <p>Thank you.</p>
+                        Your Sincerely,<br/>
+                        <b><t t-esc="doc.company_id.name"/></b><br/>
+                        <br/>
+                        <b><t t-esc="doc.user_id.partner_id.name"/></b><br/>
+                        <b><t t-esc="doc.user_id.partner_id.function"/></b>
+                                            <hr size="2" width="100%" color="black"/>
+                     <div style="width: 100%; display: table;">
+                        <div style="display: table-row; height: 100px;">
+                            <div style="width: 50%; display: table-cell;">
+                                <p style="font-size:12px"><b>METEX STEEL SDN. BHD.</b><br/>
+                                    A-1-1 &amp; A-2-1, Pusat Perdagangan Kuchai<br/>
+                                    No.2, Jalan 1/127, Off Jalan Kuchai Lama<br/>
+                                    58200 Kuala Lumpur, Malaysia</p>
+                            </div>
+                            <div style="display: table-cell;" class="text-right">
+                                   <p style="font-size:12px" align="right">T: +603 7983 8767 / +603 7987 8767<br/>
+                                    F: +603 7987 8766<br/>
+                                    E: info@metex.com.my<br/>
+                                    www.metex.com.my</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="optional_item1" model="optional.items">
+            <field name="name">RM25/DOOR FOR MORTISE LOCKSET OPENING ONLY.</field>
+        </record>
+        <record id="optional_item2" model="optional.items">
+            <field name="name">RM15/DOOR FOR CYINDRICAL LOCKSET OPENING ONLY.</field>
+        </record>
+        <record id="optional_item3" model="optional.items">
+            <field name="name">6 pcs of ±40mm meranti hardwood horizontal stiles.</field>
+        </record>
+        <record id="optional_item4" model="optional.items">
+            <field name="name">4 pcs of ±40mm meranti hardwood vertical stiles.</field>
+        </record>
+        <record id="optional_item5" model="optional.items">
+            <field name="name">Meranti hw ±10 x ±38mm lipping edge all round.</field>
+        </record>
+        <record id="optional_item6" model="optional.items">
+            <field name="name">4 pcs of ±40mm Group C hardwood horizontal stiles.</field>
+        </record>
+        <record id="optional_item7" model="optional.items">
+            <field name="name">2 pcs of ±40mm Group C hardwood vertical stiles.</field>
+        </record>
+        <record id="optional_item8" model="optional.items">
+            <field name="name">Honeycomb core infilled.</field>
+        </record>
+        <record id="optional_item9" model="optional.items">
+            <field name="name">Meranti hw 12 x 38mm hw edging all round.</field>
+        </record>
+        <record id="optional_item10" model="optional.items">
+            <field name="name">Optional item for lockset opening to be done by manufacturer's.</field>
+        </record>
+        <record id="optional_item11" model="optional.items">
+            <field name="name">Honeycomb core consist of:</field>
+        </record>
+        <record id="optional_item12" model="optional.items">
+            <field name="name">Hollow core consist of:</field>
+        </record>
+        <record id="optional_item13" model="optional.items">
+            <field name="name">Minimum quantity of door leafs measurements is 150 no's. Less than that is chargeable RM200/trip.</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <report
+            string="Print Quotation_Timber"
+            id="print_report_quotation_sale_order_fs"
+            model="sale.order"
+            report_type="qweb-pdf"
+            name="midah_timber_sale.report_quotation_sale_order_fs"
+            file="midah_timber_sale.report_quotation_sale_order_fs"
+    />
+</odoo>

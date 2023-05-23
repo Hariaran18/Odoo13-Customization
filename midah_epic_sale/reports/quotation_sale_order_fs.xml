@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--
+    <template id="my_sale.report_quotation_layout_sale_order_fs">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <h2>Quotation Line Report</h2>
+            </t>
+        </t>
+    </template>
+    <template id="my_sale.report_quotation_sale_order_fs">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="my_sale.report_quotation_layout_sale_order_fs">
+                </t>
+            </t>
+        </t>
+    </template>
+    -->
+
+
+    <template id="report_quotation_sale_order_fs">
+        <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.html_container">
+                        <div class="page">
+                        <t t-if="not o and doc">
+                            <t t-set="o" t-value="doc"/>
+                            </t>
+                            <t t-if="company_id">
+                            <t t-set="company" t-value="company_id.sudo()"></t>
+                            </t>
+                            <t t-if="o and 'company_id' in o and not company_id">
+                            <t t-set="company" t-value="o.company_id.sudo()"></t>
+                        </t>
+                        <div t-attf-class="o_company_#{company.id}_layout header" t-att-style="report_header_style">
+                            <div class="o_background_header">
+                            <div class="float-right">
+                                <h3 class="mt0 text-right" t-field="company.report_header"/>
+                            </div>
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                            <div class="clearfix mb8"/>
+                            </div>
+                        </div>
+                            <div class="Quote To">
+                                <div class="panel"><b><t t-esc="doc.partner_id.name"/></b></div>
+                                <div class="quotetocontent">
+                                    <span><t t-esc="doc.quote_to_street"/></span><br />
+                                    <span><t t-esc="doc.quote_to_street2"/></span><br />
+                                    <span><t t-esc="doc.quote_to_state_id.name"/>,<t t-esc="doc.quote_to_country_id.name"/> ,<t t-esc="doc.quote_to_zip"/></span><br />
+                                </div>
+                            </div>
+                            <br></br>
+                            <div class="Quote Ref">
+                                <div class="panel"><b>Quotation Reference:</b></div>
+                                <div class="quoterefcontent">
+                                    <span><t t-esc="doc.fl_name"/></span><br />
+                                    <span>Date: <t t-esc="doc.date_order" t-options='{"widget": "date"}'/></span><br />
+                                </div>
+                            </div>
+                            <br></br>
+                            <!--<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-left" alt="Logo"/>
+                            <h3>Quotation Reference No: <t t-esc="doc.fl_name"/></h3>
+                            <h4><t t-esc="doc.date_order" t-options='{"widget": "date"}'/></h4>
+                            <h4><t t-esc="doc.partner_id.name"/></h4>
+                            <h4>Attention: <t t-esc="doc.attn_to"/></h4>-->
+                            <b>Dear Sir/Miss,</b><br/>
+                            <b>SITE : <t t-esc="doc.project_quoted_name"/></b><br/>
+                            <b>REF   : 	QUOTATION FOR SUPPLY OF “HFI” METAL DOOR FRAME</b><br/>
+                            <hr size="5" width="100%" color="black"/>
+                            <!--<h3><t t-esc="doc.res.partner.quote_to"/></h3>
+                            <p>With reference to the above, we are pleased to forward our quotation for your perusal and kind consideration.</p>
+
+                            <div class="sectionA">
+                                <div class="panel"><h4>Sction A</h4></div>
+                                <span><p>Supply of <b> ‘HFI’ Electro Galvanised 1.1mm Single Rebated Metal Door Frame with Groveline Profile HFI 9 (54 x 150mm)</b> c/w <b> Slot in Type ‘HFI’ 2.5 x 89 x 127mm (SUS304) Stainless Steel Hinges</b>  c/w wire ties, striker plate, spreader bar and welded mitre joint.</p></span>
+                            </div>-->
+                            <br></br>
+
+                            <!--<table border="1" style="width:80%;">
+                                    <tr style="font-weight:bold;">
+                                        <th>SIZE</th>
+                                        <th>QTY</th>
+                                        <th>RATE/NO</th>
+                                        <th>AMOUNT</th>
+                                    </tr>
+                                    <t t-foreach="doc.order_line" t-as="line">
+                                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                            <tr>
+                                                <td><span t-field="line.name"/></td>
+                                                <td><span t-field="line.product_uom_qty"/></td>
+                                                <td><span t-field="line.price_unit"/></td>
+                                                <td><span t-field="line.price_subtotal"/></td>
+                                            </tr>
+                                        </tr>
+                                    </t>
+
+                            </table>-->
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th name="th_description" class="text-left">SIZE</th>
+                                        <th name="th_quantity" class="text-right">QTY</th>
+                                        <th name="th_priceunit" class="text-right">RATE/NO</th>
+                                        <th name="th_subtotal" class="text-right">AMOUNT</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+                                    <t t-set="current_subtotal" t-value="0"/>
+
+                                    <t t-foreach="doc.order_line" t-as="line">
+
+                                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                            <t t-if="not line.display_type">
+                                                <td class="text-left"><span t-field="line.name"/></td>
+                                                <td class="text-right"><span t-field="line.product_uom_qty"/></td>
+                                                <td class="text-right"><span t-field="line.price_unit"/></td>
+                                                <td class="text-right"><span t-field="line.price_subtotal"/></td>
+                                            </t>
+                                            <t t-if="line.display_type == 'line_section'">
+                                                <td name="td_section_line" colspan="99">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                                <!--<t t-set="current_section" t-value="line"/>
+                                                <t t-set="current_subtotal" t-value="0"/>-->
+                                            </t>
+                                            <t t-if="line.display_type == 'line_note'">
+                                                <td name="td_note_line" colspan="99">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+
+                                        <!--<t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section')">
+                                            <tr class="is-subtotal text-right">
+                                                <td name="td_section_subtotal" colspan="99">
+                                                    <strong class="mr16">Subtotal</strong>
+                                                    <span
+                                                        t-esc="current_subtotal"
+                                                        t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'
+                                                    />
+                                                </td>
+                                            </tr>
+                                        </t>-->
+                                    </t>
+                                </tbody>
+                            </table>
+                            <b>Note : <t t-esc="doc.quot_notes_fs"/></b><br/>
+                            <div class="optionalitems">
+                                <div class="panel"><b>Optional Items: </b></div>
+                                <ul class="itemlist">
+                                    <li><p>Extra RM<t t-esc="doc.quot_optional_item1_fs"/>/no of frame for “Recess In” Mortise Lockset Template</p></li>
+                                    <li><p>Extra RM<t t-esc="doc.quot_optional_item2_fs"/>/no of frame for 100mm normal primer at bottom of frame</p></li>
+                                    <li><p>Extra RM<t t-esc="doc.quot_optional_item3_fs"/>/no of frame for 100mm anti rust paint brand Kansai DP1009 Grey Green at bottom of frame </p></li>
+                                    <li><p>Extra RM<t t-esc="doc.quot_optional_item4_fs"/>/no of frame for 150mm epoxy coating Brand Nippon EA9 white BS9102 at bottom of frame</p></li>
+                                </ul>
+                            </div>
+                            <div class="termsconditions">
+                                <div class="panel"><b>Terms and Conditions: </b></div>
+                                <ul class="termslist">
+                                    <li><p>Validity       : <t t-esc="doc.quot_validity_fs"/> or stock availability</p></li>
+                                    <li><p>Term           : <t t-esc="doc.quot_terms_fs"/></p></li>
+                                    <li><p>Validity of prices  : Supply contract period <t t-esc="doc.quot_price_validity_fs"/> from date of confirmation and subjected to revision.</p></li>
+                                    <li><p>Supply and delivery only.</p></li>
+                                    <li><p><b>Above quoted is inclusive of SST and Subject to 0% GST</b></p></li>
+                                    <li><p>Delivery to site, base on full 3.0 tons load basis, unloading to be assisted by your general worker at site.</p></li>
+                                    <li><p>All doors and frames are fabricated according to manufacturer’s specification and details.</p></li>
+                                    <li><p>Timber is a natural grown product and will subject to changes due to variation of humidity and temperatures. We cannot therefore give any guarantee against minor shrinkage, warping</p></li>
+                                    <li><p>All door leaf that comes with special veneer plywood shall be undercoated and installed immediately.</p></li>
+                                    <li><p>The door leaf are not suitable to be used or exposed at outdoor area.</p></li>
+                                    <li><p>In the event if goods are rejected due to manufacturer’s defect, our liability shall under no circumstances exceed the price of the defective piece(s).</p></li>
+                                    <li><p>Any defect should be reported within 7 days from date of purchase and no claim will be entertained if the goods had been worked upon in any way whatsoever.</p></li>
+                                    <li><p>Any alteration made after commencement of work shall be treated as variation order.</p></li>
+                                    <li><p>Keep the internal door leaf opened wide for ventilation/air circulation after the installation.</p></li>
+                                    <li><p>Refer Ref : MICOS I attached.</p></li>
+                                </ul>
+                            </div>
+                            <br></br>
+                            <p>We trust that the above is in order and looking forward to your confirmation. Please do not hesitate to contact us for any further query.</p>
+                            <br></br>
+                            <p>Thank you.</p>
+                            <br></br>
+                            <p>Your Sincerely</p>
+                            <b><t t-esc="doc.company_id.name"/></b>
+                            <br></br>
+                            <b><t t-esc="doc.saleperson_id.name"/></b><br/>
+                            <b>Department: <t t-esc="doc.team_id.name"/></b>
+                        </div>
+                    </t>
+                </t>
+        </t>
+    </template>
+</odoo>

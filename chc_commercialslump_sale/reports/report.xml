@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <report
+            string="PrintQuotation_Commercial.Slump"
+            id="print_report_quotation_sale_order_fs"
+            model="sale.order"
+            report_type="qweb-pdf"
+            name="chc_commercialslump_sale.report_quotation_sale_order_fs"
+            file="chc_commercialslump_sale.report_quotation_sale_order_fs"
+    />
+</odoo>
